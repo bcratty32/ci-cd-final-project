@@ -56,3 +56,19 @@ spec:
               python -m pip install --upgrade pip wheel
               pip install -r requirements.txt
               nosetests $(params.args)
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: flake8
+spec:
+  description: This task runs flake8 tests
+  workspaces:
+    - name: source
+  steps:
+    - name: lint
+      image: python:3.11-slim
+      script: |
+        #!/usr/bin/env bash
+        pip install --no-cache-dir flake8
+        python -m flake8 .              
